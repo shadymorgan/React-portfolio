@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abdallah Abdelfattah — Cybersecurity & Computer Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0F14;
+    --panel:#11161D;
+    --panel-2:#161D26;
+    --line:#232C37;
+    --text:#E7ECF0;
+    --muted:#8A97A3;
+    --cyan:#5FE1D1;
+    --amber:#F0A85E;
+    --red:#E5697A;
+    --mono:'IBM Plex Mono', monospace;
+    --disp:'Space Grotesk', sans-serif;
+    --body:'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--cyan);color:#0B0F14;}
+
+  /* Ambient grid background */
+  .grid-bg{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(95,225,209,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(95,225,209,0.045) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse 70% 60% at 50% 20%, black 10%, transparent 70%);
+  }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--cyan); outline-offset:3px;
+  }
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 28px;position:relative;z-index:1;}
+
+  /* ===== NAV ===== */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:rgba(11,15,20,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:60px;}
+  .brand{font-family:var(--mono); font-size:14px; color:var(--cyan); letter-spacing:0.5px;}
+  .brand .dim{color:var(--muted);}
+  .navlinks{display:flex; gap:26px; font-family:var(--mono); font-size:13px; color:var(--muted);}
+  .navlinks a:hover{color:var(--cyan);}
+  @media (max-width:640px){ .navlinks{display:none;} }
+
+  /* ===== HERO ===== */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding-top:120px; padding-bottom:80px;
+    position:relative;
+  }
+  .term{
+    font-family:var(--mono); font-size:13px; color:var(--muted);
+    border:1px solid var(--line); background:var(--panel);
+    border-radius:8px; padding:18px 20px; max-width:560px;
+    min-height:150px;
+  }
+  .term .dot-row{display:flex; gap:6px; margin-bottom:14px;}
+  .term .dot{width:9px;height:9px;border-radius:50%;background:var(--line);}
+  .term-line{white-space:pre-wrap; word-break:break-word;}
+  .term-line .ok{color:var(--cyan);}
+  .cursor{display:inline-block;width:7px;height:14px;background:var(--cyan);vertical-align:middle;animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .hero-name{
+    font-family:var(--disp); font-weight:700;
+    font-size:clamp(38px,7vw,68px);
+    line-height:1.05;
+    margin-top:28px;
+    opacity:0; transform:translateY(10px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .hero-name.show{opacity:1; transform:translateY(0);}
+  .hero-role{
+    font-family:var(--mono); color:var(--cyan); font-size:15px; margin-top:10px;
+    opacity:0; transition:opacity .6s ease .15s;
+  }
+  .hero-role.show{opacity:1;}
+  .hero-meta{
+    display:flex; gap:18px; flex-wrap:wrap; margin-top:18px;
+    font-family:var(--mono); font-size:13px; color:var(--muted);
+    opacity:0; transition:opacity .6s ease .3s;
+  }
+  .hero-meta.show{opacity:1;}
+  .hero-meta span::before{content:"▸ "; color:var(--amber);}
+
+  /* ===== SECTION LABELS ===== */
+  .comment{
+    font-family:var(--mono); font-size:12.5px; color:var(--muted);
+    letter-spacing:0.3px; margin-bottom:10px;
+  }
+  .comment .slashes{color:var(--red); margin-right:6px;}
+  section{padding:70px 0; border-top:1px solid var(--line); position:relative;}
+  h2.stitle{
+    font-family:var(--disp); font-weight:600; font-size:clamp(24px,3.5vw,32px);
+    margin-bottom:26px; color:var(--text);
+  }
+
+  /* ===== OBJECTIVE ===== */
+  .objective p{font-size:16.5px; color:#C9D2D9; max-width:680px;}
+
+  /* ===== EDUCATION ===== */
+  .edu-card{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    border:1px solid var(--line); background:var(--panel);
+    border-radius:10px; padding:22px 24px; gap:20px; flex-wrap:wrap;
+  }
+  .edu-card h3{font-family:var(--disp); font-size:19px; font-weight:600;}
+  .edu-card .sub{color:var(--muted); font-size:14px; margin-top:4px;}
+  .badge{
+    font-family:var(--mono); font-size:12px; color:var(--cyan);
+    border:1px solid rgba(95,225,209,0.35); border-radius:999px;
+    padding:5px 12px; white-space:nowrap;
+  }
+
+  /* ===== CERTS ===== */
+  .cert-list{display:flex; flex-direction:column; gap:2px;}
+  .cert-row{
+    display:grid; grid-template-columns:96px 1fr auto; gap:16px; align-items:baseline;
+    padding:16px 4px; border-bottom:1px solid var(--line);
+    font-size:14.5px;
+  }
+  .cert-row:last-child{border-bottom:none;}
+  .cert-row .status{
+    font-family:var(--mono); font-size:11px; color:var(--cyan);
+    background:rgba(95,225,209,0.08); border:1px solid rgba(95,225,209,0.25);
+    border-radius:5px; padding:3px 8px; text-align:center; width:fit-content;
+  }
+  .cert-row .cname{font-weight:600; color:var(--text);}
+  .cert-row .cissuer{color:var(--muted); font-size:13px; margin-top:2px;}
+  .cert-row .cdate{font-family:var(--mono); color:var(--muted); font-size:12.5px; white-space:nowrap;}
+  @media (max-width:640px){
+    .cert-row{grid-template-columns:1fr; gap:6px;}
+    .cert-row .cdate{order:3;}
+  }
+
+  /* ===== SKILLS ===== */
+  .skill-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px;}
+  .skill-chip{
+    border:1px solid var(--line); background:var(--panel);
+    border-radius:8px; padding:14px 16px;
+    font-family:var(--mono); font-size:13.5px;
+    display:flex; align-items:center; justify-content:space-between;
+    transition:border-color .25s ease, transform .25s ease;
+  }
+  .skill-chip:hover{border-color:var(--cyan); transform:translateY(-2px);}
+  .skill-chip .idx{color:var(--muted); font-size:11px;}
+
+  /* ===== COMPETENCIES ===== */
+  .comp-list{display:flex; flex-direction:column; gap:0;}
+  .comp-row{
+    display:flex; gap:16px; padding:14px 0; border-bottom:1px solid var(--line);
+    align-items:flex-start;
+  }
+  .comp-row:last-child{border-bottom:none;}
+  .comp-row .arrow{color:var(--amber); font-family:var(--mono); flex-shrink:0;}
+  .comp-row p{color:#C9D2D9; font-size:15px;}
+
+  /* ===== LANGUAGES ===== */
+  .lang-row{display:flex; gap:40px; flex-wrap:wrap;}
+  .lang-item{min-width:180px;}
+  .lang-item .name{font-family:var(--disp); font-weight:600; font-size:17px;}
+  .lang-item .level{font-family:var(--mono); font-size:12.5px; color:var(--muted); margin-top:4px;}
+  .bar{height:5px; background:var(--line); border-radius:3px; margin-top:10px; overflow:hidden;}
+  .bar span{display:block; height:100%; background:var(--cyan);}
+
+  /* ===== CONTACT ===== */
+  .contact-box{
+    border:1px solid var(--line); background:linear-gradient(160deg, var(--panel), var(--panel-2));
+    border-radius:12px; padding:40px 32px; text-align:center;
+  }
+  .contact-box h2{font-family:var(--disp); font-size:clamp(22px,4vw,30px); margin-bottom:12px;}
+  .contact-box p{color:var(--muted); margin-bottom:22px; font-size:14.5px;}
+  .mail-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:14px; color:var(--ink);
+    background:var(--cyan); padding:12px 22px; border-radius:8px;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .mail-btn:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(95,225,209,0.25);}
+
+  footer{
+    text-align:center; padding:32px 0 60px; color:var(--muted);
+    font-family:var(--mono); font-size:12px;
+  }
+
+  /* reveal on scroll */
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">abdallah<span class="dim">@</span>portfolio<span class="dim">:~$</span></div>
+    <div class="navlinks">
+      <a href="#education">education</a>
+      <a href="#certifications">certs</a>
+      <a href="#skills">skills</a>
+      <a href="#competencies">competencies</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="term" id="term">
+      <div class="dot-row">
+        <div class="dot" style="background:#E5697A"></div>
+        <div class="dot" style="background:#F0A85E"></div>
+        <div class="dot" style="background:#5FE1D1"></div>
+      </div>
+      <div id="term-output"></div>
+    </div>
+
+    <h1 class="hero-name" id="hname">Abdallah Abdelfattah Mohamed</h1>
+    <div class="hero-role" id="hrole">Computer Science Student — Cybersecurity Specialization</div>
+    <div class="hero-meta" id="hmeta">
+      <span>Innovation University · Year 2</span>
+      <span>Egypt</span>
+      <span>abdallahbody967@gmail.com</span>
+    </div>
+  </div>
+</header>
+
+<section class="objective reveal">
+  <div class="wrap">
+    <div class="comment"><span class="slashes">//</span>objective</div>
+    <p>Motivated Computer Science student in his second year, specializing in Cybersecurity, with hands-on experience in programming, networking, and database systems. Passionate about building secure systems and continuously expanding his technical skill set through internationally recognized certifications.</p>
+  </div>
+</section>
+
+<section id="education" class="reveal">
+  <div class="wrap">
+    <div class="comment"><span class="slashes">//</span>education</div>
+    <h2 class="stitle">Academic record</h2>
+    <div class="edu-card">
+      <div>
+        <h3>Bachelor of Science in Computer Science</h3>
+        <div class="sub">Innovation University · Specialization: Cybersecurity</div>
+      </div>
+      <div class="badge">2nd Year — In Progress</div>
+    </div>
+  </div>
+</section>
+
+<section id="certifications" class="reveal">
+  <div class="wrap">
+    <div class="comment"><span class="slashes">//</span>certifications</div>
+    <h2 class="stitle">Verified credentials</h2>
+    <div class="cert-list">
+
+      <div class="cert-row">
+        <div class="status">VERIFIED</div>
+        <div>
+          <div class="cname">Red Hat Linux Fundamentals (RH104 - RHA) — Ver. 9.1</div>
+          <div class="cissuer">Red Hat</div>
+        </div>
+        <div class="cdate">Apr 2026</div>
+      </div>
+
+      <div class="cert-row">
+        <div class="status">VERIFIED</div>
+        <div>
+          <div class="cname">CCNA: Introduction to Networks</div>
+          <div class="cissuer">Cisco Networking Academy — Innovation University</div>
+        </div>
+        <div class="cdate">May 2026</div>
+      </div>
+
+      <div class="cert-row">
+        <div class="status">VERIFIED</div>
+        <div>
+          <div class="cname">Database Foundations</div>
+          <div class="cissuer">Oracle Academy — Innovation University</div>
+        </div>
+        <div class="cdate">May 2026</div>
+      </div>
+
+      <div class="cert-row">
+        <div class="status">VERIFIED</div>
+        <div>
+          <div class="cname">Artificial Intelligence</div>
+          <div class="cissuer">British University in Egypt (BUE)</div>
+        </div>
+        <div class="cdate">2026</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="reveal">
+  <div class="wrap">
+    <div class="comment"><span class="slashes">//</span>technical skills</div>
+    <h2 class="stitle">Languages & tools</h2>
+    <div class="skill-grid">
+      <div class="skill-chip"><span>Python</span><span class="idx">.py</span></div>
+      <div class="skill-chip"><span>C++</span><span class="idx">.cpp</span></div>
+      <div class="skill-chip"><span>C#</span><span class="idx">.cs</span></div>
+      <div class="skill-chip"><span>Java</span><span class="idx">.java</span></div>
+      <div class="skill-chip"><span>Linux</span><span class="idx">sh</span></div>
+      <div class="skill-chip"><span>Networking</span><span class="idx">net</span></div>
+      <div class="skill-chip"><span>Databases</span><span class="idx">sql</span></div>
+      <div class="skill-chip"><span>Git</span><span class="idx">vcs</span></div>
+      <div class="skill-chip"><span>Cybersecurity</span><span class="idx">sec</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="competencies" class="reveal">
+  <div class="wrap">
+    <div class="comment"><span class="slashes">//</span>key competencies</div>
+    <h2 class="stitle">What he brings</h2>
+    <div class="comp-list">
+      <div class="comp-row"><span class="arrow">▸</span><p>Linux system administration and command-line proficiency (Red Hat certified)</p></div>
+      <div class="comp-row"><span class="arrow">▸</span><p>Network fundamentals, IP addressing, and routing protocols (CCNA level)</p></div>
+      <div class="comp-row"><span class="arrow">▸</span><p>Relational database design and SQL (Oracle Academy certified)</p></div>
+      <div class="comp-row"><span class="arrow">▸</span><p>Object-oriented programming in Python, Java, C++, and C#</p></div>
+      <div class="comp-row"><span class="arrow">▸</span><p>Foundational knowledge in Artificial Intelligence and Machine Learning</p></div>
+      <div class="comp-row"><span class="arrow">▸</span><p>Interest in ethical hacking, penetration testing, and cybersecurity principles</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="wrap">
+    <div class="comment"><span class="slashes">//</span>languages</div>
+    <h2 class="stitle">Spoken languages</h2>
+    <div class="lang-row">
+      <div class="lang-item">
+        <div class="name">Arabic</div>
+        <div class="level">Native</div>
+        <div class="bar"><span style="width:100%"></span></div>
+      </div>
+      <div class="lang-item">
+        <div class="name">English</div>
+        <div class="level">Intermediate — B1</div>
+        <div class="bar"><span style="width:45%"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="reveal">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>Let's connect</h2>
+      <p>Open to internships, collaborative projects, and cybersecurity opportunities.</p>
+      <a class="mail-btn" href="mailto:abdallahbody967@gmail.com">abdallahbody967@gmail.com →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  connection closed · Abdallah Abdelfattah Mohamed · Egypt
+</footer>
+
+<script>
+  // Terminal boot sequence
+  const lines = [
+    { text: "$ ssh abdallah@innovation-university", delay: 25 },
+    { text: "Establishing secure connection...", delay: 20, cls:"ok" },
+    { text: "Authenticating credentials... OK", delay: 20, cls:"ok" },
+    { text: "Loading profile: cs-student / cybersecurity-track", delay: 15 },
+    { text: "Connection established.", delay: 20, cls:"ok" },
+  ];
+  const out = document.getElementById('term-output');
+  let li = 0;
+
+  function typeLine(cb){
+    if(li >= lines.length){ cb(); return; }
+    const line = lines[li];
+    const div = document.createElement('div');
+    div.className = 'term-line';
+    out.appendChild(div);
+    let ci = 0;
+    const iv = setInterval(()=>{
+      div.textContent = line.text.slice(0, ci+1);
+      if(line.cls) div.classList.add(line.cls);
+      ci++;
+      if(ci >= line.text.length){
+        clearInterval(iv);
+        li++;
+        setTimeout(()=>typeLine(cb), 180);
+      }
+    }, line.delay);
+  }
+
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  out.appendChild(cursor);
+
+  typeLine(()=>{
+    cursor.remove();
+    document.getElementById('hname').classList.add('show');
+    document.getElementById('hrole').classList.add('show');
+    document.getElementById('hmeta').classList.add('show');
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
